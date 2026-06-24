@@ -1,0 +1,56 @@
+CNN ImageClassification Security Scan
+=============================================
+
+Project root: C:\Users\15711\Documents\Codex\2026-06-24\new-chat\outputs\CocoWeb_CNN_ImageClassification_security_hardening\github-pr\成员代码\郎竞茗_CNN_ImageClassification
+Security module: security\secure_image_input.py
+
+Policy summary
+---------------------------------------------
+- Allowed types: jpg/jpeg/png
+- Max upload size: 5MB
+- Max dimensions: 4096x4096
+- Max pixels: 10000000
+- User filename is not trusted as a server path
+- Internal prediction exceptions are hidden from users
+
+Static security checks
+---------------------------------------------
+[PASS] S1 Allowed image extensions are restricted | risk=High
+       evidence: ALLOWED_EXTENSIONS contains jpg/jpeg/png
+[PASS] S2 Real image content is verified | risk=High
+       evidence: Uses file header detection and Pillow verify()
+[PASS] S3 Path traversal filename fragments are rejected | risk=High
+       evidence: Rejects ../, /, and backslash in uploaded filename
+[PASS] S4 Upload size is limited | risk=Medium
+       evidence: MAX_UPLOAD_BYTES is set to 5MB
+[PASS] S5 Image dimensions and pixel count are limited | risk=Medium
+       evidence: MAX_IMAGE_PIXELS, MAX_WIDTH, and MAX_HEIGHT are enforced
+[PASS] S6 Internal prediction errors are hidden from users | risk=Medium
+       evidence: Public response is a fixed safe error message
+[PASS] S7 Validation failure stops prediction | risk=High
+       evidence: SecurityValidationError is handled before model prediction response
+
+Unit test summary
+---------------------------------------------
+Status: PASS
+Tests run: 6
+Failures: 0
+Errors: 0
+
+Unit test details
+---------------------------------------------
+test_accepts_valid_png_and_normalizes_rgb (test_secure_image_input.SecureImageInputTests.test_accepts_valid_png_and_normalizes_rgb) ... ok
+test_prediction_hides_internal_errors (test_secure_image_input.SecureImageInputTests.test_prediction_hides_internal_errors) ... ok
+test_rejects_disallowed_extension (test_secure_image_input.SecureImageInputTests.test_rejects_disallowed_extension) ... ok
+test_rejects_fake_image_content (test_secure_image_input.SecureImageInputTests.test_rejects_fake_image_content) ... ok
+test_rejects_oversized_declared_body (test_secure_image_input.SecureImageInputTests.test_rejects_oversized_declared_body) ... ok
+test_rejects_path_traversal_filename (test_secure_image_input.SecureImageInputTests.test_rejects_path_traversal_filename) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.059s
+
+OK
+
+Final result
+---------------------------------------------
+PASS: high-risk upload and prediction-entry issues are covered.
