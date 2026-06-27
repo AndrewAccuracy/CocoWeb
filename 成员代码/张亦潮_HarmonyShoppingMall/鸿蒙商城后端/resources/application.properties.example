@@ -1,0 +1,17 @@
+# 数据库配置（示例，请复制为 application.properties 后修改）
+spring.datasource.url=jdbc:mysql://localhost:3306/hmshop?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+spring.datasource.username=root
+spring.datasource.password=your_password
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=false
+
+# JWT 配置 —— 生产环境必须通过环境变量 HMshop_JWT_SECRET 注入，禁止提交真实密钥
+hmshop.jwt.secret=${HMshop_JWT_SECRET:change-me-in-production-use-env-var}
+hmshop.jwt.expiration-seconds=86400
+hmshop.jwt.issuer=hmshop-backend
+
+# 服务端端口
+server.port=8080
+
+# 生产环境应启用 HTTPS（由反向代理或 Spring Boot SSL 终止）
+# server.ssl.enabled=true
