@@ -3,7 +3,6 @@ import numpy as np
 from config import CausalLMConfig
 from transformer_block import TransformerBlock
 from layernorm import LayerNorm
-from security_input import validate_input_ids, validate_max_new_tokens
 
 class CausalLM:
     def __init__(self, config: CausalLMConfig):
@@ -18,11 +17,6 @@ class CausalLM:
 
     def forward(self, input_ids):
         # input_ids: [seq_len]
-        input_ids = validate_input_ids(
-            input_ids,
-            self.config.vocab_size,
-            self.config.max_position_embeddings,
-        )
         x = self.embeddings[input_ids]  # [seq_len, hidden_size]
         for block in self.blocks:
             x = block(x)
@@ -31,16 +25,7 @@ class CausalLM:
         return logits
 
     def generate(self, input_ids, max_new_tokens=20):
-        ids = validate_input_ids(
-            input_ids,
-            self.config.vocab_size,
-            self.config.max_position_embeddings,
-        )
-        max_new_tokens = validate_max_new_tokens(
-            max_new_tokens,
-            self.config.max_position_embeddings,
-            len(ids),
-        )
+        ids = list(input_ids)
         for _ in range(max_new_tokens):
             logits = self.forward(ids)
             next_id = int(np.argmax(logits[-1]))
