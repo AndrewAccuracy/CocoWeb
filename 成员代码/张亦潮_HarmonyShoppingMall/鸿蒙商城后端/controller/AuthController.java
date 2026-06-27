@@ -9,8 +9,6 @@ import com.hmshop.backend.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,18 +40,10 @@ public class AuthController extends BaseController {
 
     @PostMapping("/logout")
     public ApiResponse<Void> logout(HttpServletRequest request) {
-        String token = extractToken(request);
-        if (StringUtils.hasText(token)) {
-            authService.logout(token);
+        User user = getCurrentUser(request);
+        if (user != null) {
+            authService.logout(user);
         }
         return ApiResponse.ok(null);
-    }
-
-    private String extractToken(HttpServletRequest request) {
-        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer ")) {
-            return authorization.substring(7).trim();
-        }
-        return request.getHeader("x-litemall-token");
     }
 }
