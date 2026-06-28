@@ -1,15 +1,24 @@
-# Local configuration with private API credentials
-config/config.yaml
-
-# Runtime logs and evidence artifacts
-logs/
-
-# Python cache
+# Python-generated files
 __pycache__/
-*.pyc
-*.pyo
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
 
-# Common virtual environments
-.venv/
-venv/
-env/
+# Virtual environments
+.venv
+.python-version
+nvim_*.log
+
+# better morning
+history
+daily-*
+debug
+run.log
+run.err.log
+run-preview.log
+.env.local
+
+# Claude Code internal directory (contains worktrees and local symlinks)
+.claude/

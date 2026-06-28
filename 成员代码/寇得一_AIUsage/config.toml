@@ -1,0 +1,92 @@
+[llm_settings]
+reasoner_model = "openai/gpt-4o"
+light_model = "openai/gpt-4o-mini"
+temperature = 0.3
+# Output language for all LLM-generated summaries and the one-line take.
+# Common values: "Chinese", "English", "Japanese", "Spanish", "French" ...
+# Override without editing this file: BETTER_MORNING_OUTPUT_LANGUAGE=English
+output_language = "Chinese"
+thinking_effort_reasoner = "medium"
+thinking_effort_light = "medium"
+prompt_template = """请用中文总结下面文章，要求：
+1. 先给一句标题式总结；
+2. 再给 3-5 句关键信息；
+3. 最后给一句“入选优势”，说明它为什么值得占据最终列表的一个位置；
+4. 保留公司名、机构名、数字、时间、国家；
+5. 禁止空话、套话、营销口吻；
+6. 全文控制在约 {k_words_each_summary} 个中文词以内。
+
+标题: {title}
+内容: {content}
+
+总结："""
+article_selection_prompt_template = """请从下面文章列表中选择最值得进入国际晨报的前 {num_to_select} 条。
+选择依据：全球影响力、方向性、信息密度、政策/产业/市场影响，以及今天是否值得继续跟踪。
+这批文章服务于栏目要求：{collection_prompt}
+
+请只返回合法 JSON，格式为 {{"selected_indices": [1, 2, 3]}}。
+
+{repeated_news_instruction}
+----------------
+Previous digests:
+{context_section}
+
+----------------
+Articles:
+{articles_str}
+"""
+collection_summary_prompt_template = """你是“AI + Finance 国际晨报邮件系统”的主编。
+今天日期：{today}
+
+请基于下面的文章摘要，选出 {n_most_important_news} 条最重要新闻，生成一个中文栏目。
+要求：
+1. 严格服从栏目定位：{user_guideline}
+2. 每条必须保留原文标题；
+3. 每条必须包含来源 Markdown 链接，格式类似 ([Source](Link))；
+4. 每条包含 2-4 句中文摘要；
+5. 每条最后必须补一句“入选优势：...”，说明它相对于普通候选条目的优势；
+6. 如果高质量内容不足 {n_most_important_news} 条，宁缺毋滥；
+7. 避免重复 previous digests 里已经覆盖过的旧故事；
+8. 不要写开场白、结语或栏目标题，只输出编号列表。
+
+Previous digests:
+{context_section}
+
+----------------
+Article summaries:
+
+{concatenated_summaries}
+"""
+# Optional: customize the LLM prompts used for article selection,
+# collection overview generation, and boolean filtering.
+# Supported variables:
+# - article_selection_prompt_template: {num_to_select}, {collection_prompt}, {repeated_news_instruction}, {context_section}, {articles_str}
+# - collection_summary_prompt_template: {today}, {n_most_important_news}, {output_language}, {target_word_count}, {repeated_news_instruction}, {user_guideline}, {context_section}, {concatenated_summaries}
+# - filter_prompt_template: {filter_query}, {title}, {link}, {content}
+
+[content_extraction_settings]
+follow_article_links = false
+# Keep Chromium's own sandbox enabled by default. Set to false only inside a
+# separate container/runtime sandbox that requires Playwright's --no-sandbox.
+browser_sandbox = true
+# Block localhost/private-network fetches by default to reduce SSRF risk from
+# malicious feeds, redirects, or linked pages.
+allow_private_networks = false
+
+[filter_settings]
+filter_model = "openai/gpt-4o"
+
+# Number of previous digests used as context for article relevance decisions
+# This helps avoid repeating similar news and provides better context for relevance decisions
+context_digest_size = 4
+
+# Days to keep processed articles in history.
+# For a weekly digest, set this to at least 14 so last week's articles
+# stay in history and cannot re-appear in the next run.
+history_retention_days = 14
+
+[output_settings]
+output_type = "email"      # Options: "github_release", "email"
+email_provider = "icloud"  # Supported: gmail, outlook, icloud, qq, 163, 126, yahoo, zoho, custom
+# smtp_server and smtp_port are set automatically by email_provider.
+# Override them here only if you use a custom/self-hosted SMTP server.

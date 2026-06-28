@@ -1,0 +1,152 @@
+name = "Finance Top 10"
+max_age = "7d"
+follow_article_links = false
+
+collection_prompt = """
+请输出“Finance Top 10”。
+目标是形成一份偏 FT / WSJ 风格的国际宏观与市场晨报，而不是泛财经杂讯。
+请优先覆盖：
+1. 全球经济与政策主线：央行、利率、通胀、就业、增长、财政、贸易、地缘风险；
+2. 市场走向：美股/全球股市、债券收益率、美元、黄金、原油、大宗商品、信用与波动率；
+3. 影响风险偏好的公司/行业事件：大型科技、金融机构、能源、系统重要企业；
+4. FT、WSJ、CNBC、MarketWatch、Fed、BIS 等来源中能解释“今天市场为什么这样走”的内容。
+
+每条包括：
+1. 原文标题；
+2. 来源；
+3. 2-4 句中文摘要；
+4. 1 句“入选优势”。
+
+排序规则：对全球市场定价的影响、宏观方向性、政策/流动性变化、跨资产联动、是否会影响今日市场叙事。
+“入选优势”必须说明这条相对于普通财经新闻的优势：市场定价影响、宏观方向、政策/流动性变化、跨资产影响或今日市场叙事。
+"""
+
+[llm_settings]
+n_most_important_news = 10
+k_words_each_summary = 140
+
+[filter_settings]
+filter_query = """
+Include only entries that are important for an international finance observer.
+Keep:
+- central banks
+- inflation / rates / labor / GDP
+- major equity, bond, FX, credit, volatility, gold, oil, and commodity developments
+- geopolitical news with market impact
+- global economic outlook and recession / soft-landing risks
+- market direction stories explaining risk-on / risk-off moves
+- major earnings surprises
+- large M&A, capital market events, IPOs, or funding rounds only when they affect market narrative
+- AI-related financial developments only when they affect listed companies, capex, funding markets, or market leadership
+Exclude:
+- local low-impact stories
+- company PR with no market significance
+- repetitive commentary
+- personal finance tips
+- sponsored content
+- celebrity real estate and lifestyle stories
+- narrow retirement planning, tax advice, or household budgeting articles
+"""
+
+[[feeds]]
+url = "https://www.ft.com/markets?format=rss"
+name = "Financial Times Markets"
+max_articles = 20
+
+[[feeds]]
+url = "https://www.ft.com/global-economy?format=rss"
+name = "Financial Times Global Economy"
+max_articles = 20
+
+[[feeds]]
+url = "https://feeds.content.dowjones.io/public/rss/RSSMarketsMain"
+name = "Wall Street Journal Markets"
+max_articles = 20
+
+[[feeds]]
+url = "https://feeds.content.dowjones.io/public/rss/WSJcomUSBusiness"
+name = "Wall Street Journal Business"
+max_articles = 20
+
+[[feeds]]
+url = "https://feeds.content.dowjones.io/public/rss/mw_topstories"
+name = "MarketWatch Top Stories"
+max_articles = 20
+
+[[feeds]]
+url = "https://www.cnbc.com/id/10000664/device/rss/rss.html"
+name = "CNBC Finance"
+max_articles = 20
+
+[[feeds]]
+url = "https://www.cnbc.com/id/100003114/device/rss/rss.html"
+name = "CNBC Top News"
+max_articles = 20
+
+[[feeds]]
+url = "https://www.bis.org/doclist/all_pressrels.rss"
+name = "BIS Press Releases"
+max_articles = 10
+
+[[feeds]]
+url = "https://www.federalreserve.gov/feeds/press_all.xml"
+name = "Federal Reserve Press Releases"
+max_articles = 10
+
+[[feeds]]
+url = "https://medium.com/feed/tag/macroeconomics"
+name = "Medium Macroeconomics"
+max_articles = 10
+follow_article_links = false
+filter_query = """
+Include only high-signal macroeconomics articles relevant to global markets, central banks, inflation, rates, fiscal policy, trade, labor, growth, or geopolitical market risk.
+Exclude basic explainers, academic summaries with no market relevance, personal opinions without data, and local-only stories.
+"""
+
+[[feeds]]
+url = "https://medium.com/feed/tag/finance"
+name = "Medium Finance"
+max_articles = 10
+follow_article_links = false
+filter_query = """
+Include only finance articles with relevance to global markets, macro policy, liquidity, risk appetite, equities, bonds, FX, commodities, credit, or major capital-market events.
+Exclude personal finance, retirement advice, tax tips, budgeting, crypto hype, sponsored content, and generic investment advice.
+"""
+
+[[feeds]]
+url = "https://medium.com/feed/tag/investing"
+name = "Medium Investing"
+max_articles = 8
+follow_article_links = false
+filter_query = """
+Include only investing articles that explain major market direction, cross-asset moves, macro drivers, systemic risks, or important sector leadership.
+Exclude personal stock picks, newsletters without evidence, personal finance advice, crypto hype, and generic portfolio tips.
+"""
+
+[[feeds]]
+url = "https://www.apricitas.io/feed"
+name = "Apricitas Economics"
+max_articles = 10
+follow_article_links = false
+
+[[feeds]]
+url = "https://theovershoot.co/feed"
+name = "The Overshoot"
+max_articles = 10
+follow_article_links = false
+
+[[feeds]]
+url = "https://www.netinterest.co/feed"
+name = "Net Interest"
+max_articles = 8
+follow_article_links = false
+
+[[feeds]]
+url = "https://www.noahpinion.blog/feed"
+name = "Noahpinion"
+max_articles = 8
+follow_article_links = false
+filter_query = """
+Include only posts with macro, markets, industrial policy, technology economics, geopolitics, growth, trade, labor, or capital-allocation relevance.
+Exclude domestic politics commentary unless it has clear market or macro implications.
+"""

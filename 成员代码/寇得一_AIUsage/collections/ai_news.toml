@@ -1,0 +1,135 @@
+name = "AI Top 10"
+max_age = "7d"
+
+collection_prompt = """
+请输出“AI Top 10”。
+每条包括：
+1. 原文标题
+2. 来源
+3. 2-4 句中文摘要
+4. 1 句“入选优势”
+优先选择国际影响力强、信息密度高、方向性强的 AI 新闻。
+排序规则：全球影响力、方向性、信息密度、与产业格局的关系、是否值得今天继续追踪。
+“入选优势”必须说明这条相对于普通 AI 新闻的优势：全球影响力、产业方向、技术/产品变化、竞争格局或后续可追踪性。
+"""
+
+[llm_settings]
+n_most_important_news = 10
+k_words_each_summary = 140
+
+[filter_settings]
+filter_query = """
+Include only entries that are genuinely important for an international AI observer.
+Keep:
+- frontier models
+- AI agents
+- inference / training infrastructure
+- open-source models with meaningful ecosystem impact
+- AI policy and regulation
+- AI safety and security
+- major funding, acquisitions, strategic partnerships
+Exclude:
+- tutorials
+- small feature launches
+- repetitive commentary
+- low-signal reposts
+- generic product marketing
+"""
+
+[[feeds]]
+url = "https://openai.com/news/rss.xml"
+name = "OpenAI News"
+max_articles = 10
+follow_article_links = false  # openai.com blocks all sub-link crawling (403)
+
+[[feeds]]
+url = "https://feed.infoq.com/anthropic/"
+name = "InfoQ Anthropic"
+max_articles = 10
+follow_article_links = false
+
+[[feeds]]
+url = "https://deepmind.google/blog/rss.xml"
+name = "Google DeepMind Blog"
+max_articles = 10
+follow_article_links = false
+
+[[feeds]]
+url = "https://huggingface.co/blog/feed.xml"
+name = "Hugging Face Blog"
+max_articles = 10
+follow_article_links = false
+
+[[feeds]]
+url = "https://techcrunch.com/category/artificial-intelligence/feed/"
+name = "TechCrunch AI"
+max_articles = 15
+follow_article_links = false
+
+[[feeds]]
+url = "https://venturebeat.com/category/ai/feed/"
+name = "VentureBeat AI"
+max_articles = 15
+follow_article_links = false
+
+[[feeds]]
+url = "https://www.theverge.com/rss/index.xml"
+name = "The Verge"
+max_articles = 15
+follow_article_links = false
+
+[[feeds]]
+url = "https://medium.com/feed/tag/artificial-intelligence"
+name = "Medium Artificial Intelligence"
+max_articles = 12
+follow_article_links = false
+filter_query = """
+Include only high-signal Medium articles about AI that matter for an international AI observer.
+Keep:
+- frontier models, agents, AI infrastructure, open-source ecosystem shifts, AI policy, AI security, and major platform changes
+- essays with original analysis, concrete evidence, useful numbers, or clear industry implications
+Exclude:
+- beginner tutorials, prompt lists, generic productivity tips, generic ChatGPT use cases, thin opinion posts, and promotional content
+"""
+
+[[feeds]]
+url = "https://medium.com/feed/tag/generative-ai"
+name = "Medium Generative AI"
+max_articles = 10
+follow_article_links = false
+filter_query = """
+Include only Medium generative AI articles with strategic, technical, product, policy, or market significance.
+Exclude beginner tutorials, generic tool roundups, prompt hacks, marketing posts, and repetitive commentary.
+"""
+
+[[feeds]]
+url = "https://towardsdatascience.com/feed"
+name = "Towards Data Science"
+max_articles = 10
+follow_article_links = false
+filter_query = """
+Include only Towards Data Science articles that are relevant to AI industry direction, model behavior, applied AI systems, evaluation, deployment, or data/ML infrastructure.
+Exclude basic coding tutorials, narrow notebook walkthroughs, and low-impact how-to posts.
+"""
+
+[[feeds]]
+url = "https://www.latent.space/feed"
+name = "Latent Space"
+max_articles = 10
+follow_article_links = false
+
+[[feeds]]
+url = "https://www.interconnects.ai/feed"
+name = "Interconnects"
+max_articles = 10
+follow_article_links = false
+
+[[feeds]]
+url = "https://www.oneusefulthing.org/feed"
+name = "One Useful Thing"
+max_articles = 8
+follow_article_links = false
+filter_query = """
+Include only posts with broader AI product, labor, education, policy, or adoption implications.
+Exclude narrow personal experiments unless they reveal a meaningful AI capability, adoption pattern, or risk.
+"""
